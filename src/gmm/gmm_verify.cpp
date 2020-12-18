@@ -1,4 +1,3 @@
-
 #include <unistd.h> //getopt function, to parse options
 #include <iostream>
 #include <fstream>
@@ -25,14 +24,13 @@ int read_gmms(const Directory &dir, const Ext &ext, const vector<string> &gmm_fi
 
 float verify(const GMM &gmm_candidate, const fmatrix &dat) {
 
-  //TODO: implement verification score based on gmm of the candidate
+  //DONE: implement verification score based on gmm of the candidate
   /*
     lprobcand is an informative values to be printed as debug information.
     The decision is based on the returned value
    */
 
-  float score = 0.0F;
-  return score;
+  return gmm_candidate.logprob(dat);
 }
 
 
@@ -45,8 +43,9 @@ float verify(const GMM &gmm_candidate, const GMM & gmm_world, const fmatrix &dat
   lprobcand = 0.0F;
   lprobbackground = 0.0F;
 
-
-  return score;
+  lprobcand = gmm_candidate.logprob(dat);
+  lprobbackground = gmm_world.logprob(dat);
+  return lprobcand - lprobbackground;
 
 }
 

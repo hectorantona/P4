@@ -91,7 +91,7 @@ def limsGMM(means, covs, fStd=3):
 
     return min_, max_
 
-def plotGMM(fileGMM, xDim, yDim, percents, colorGmm, filesFeat=None, colorFeat=None, limits=None, subplot=111):
+def plotGMM(fileGMM, xDim, yDim, percents, colorGmm, filesFeat=None, colorFeat=None, limits=None, subplot=221):
     weights, means, covs = read_gmm(fileGMM)
 
     ax = plt.subplot(subplot)
@@ -139,7 +139,7 @@ def plotGMM(fileGMM, xDim, yDim, percents, colorGmm, filesFeat=None, colorFeat=N
     fmt = {levels[i]: f'{percents[i]:.0%}' for i in range(len(levels))}
     ax.clabel(CS, inline=1, fontsize=14, fmt=fmt)
 
-    plt.title(f'GMM: {fileGMM}')
+    plt.title(f'Region coverage predicted by {fileGMM}')
     plt.axis('tight')
     plt.axis(limits)
     plt.show()
@@ -153,7 +153,7 @@ USAGE='''
 Draws the regions in space covered with a certain probability by a GMM.
 
 Usage:
-    plotGMM [--help|-h] [options] <file-gmm> [<file-feat>...]
+    plotGMM [--help|-h] [options] <file-gmm1> <file-gmm2> [<file-feat1> <file-feat2>...]
 
 Options:
     --yDim INT, -x INT               'x' dimension to use from GMM and feature vectors [default: 0]
@@ -173,8 +173,10 @@ Arguments:
 if __name__ == '__main__':
     args = docopt(USAGE)
 
-    fileGMM = args['<file-gmm>']
-    filesFeat = args['<file-feat>']
+    fileGMM1 = args['<file-gmm1>']
+    fileGMM2 = args['<file-gmm2>']
+    filesFeat1 = args['<file-feat1>']
+    filesFeat2 = args['<file-feat2>']
     xDim = int(args['--xDim'])
     yDim = int(args['--yDim'])
     percents = args['--percents']
@@ -193,5 +195,8 @@ if __name__ == '__main__':
         limits = None
     
     
-    plotGMM(fileGMM, xDim, yDim, percents, colorGmm, filesFeat, colorFeat, limits, 111)
+    plotGMM(fileGMM1, xDim, yDim, percents, colorGmm, filesFeat1, colorFeat, limits, 221)
+    plotGMM(fileGMM1, xDim, yDim, percents, colorGmm, filesFeat2, colorFeat, limits, 222)
+    plotGMM(fileGMM2, xDim, yDim, percents, colorGmm, filesFeat1, colorFeat, limits, 223)
+    plotGMM(fileGMM2, xDim, yDim, percents, colorGmm, filesFeat2, colorFeat, limits, 224)
 
